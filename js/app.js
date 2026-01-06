@@ -58,12 +58,13 @@ let formHandler;
 // --- INITIALIZATION ---
 window.addEventListener("load", initialize);
 
-function initialize() {
+async function initialize() {
     listManager = new ListManager("teams-list");
     formHandler = new FormHandler("team-form");
-
+    loadData();
     setupEventListeners();
 
+    // [UPDATED] Check for User FIRST, to decide how to load data
     const savedUser = localStorage.getItem(STORAGE_KEY_USER);
 
     // Load Data (Waits for fetch if guest)
@@ -71,15 +72,11 @@ function initialize() {
 
     if (savedUser) {
         try {
-            // Restore session
-            const userObj = JSON.parse(savedUser);
-            handleLoginSuccess(userObj, false);
-
-            // [NEW] Start the inactivity timer immediately
+            handleLoginSuccess(JSON.parse(savedUser), false);
             startInactivityTimer();
         } catch (e) {
             console.error("Login Parse Error:", e);
-            startAsGuest();
+            // Don't startAsGuest() here because loadData() already handled the guest view
         }
     } else {
         // If no user, loadData() already set us up as Guest via the fetch
@@ -95,23 +92,78 @@ function startAsGuest() {
     showPanel("dashboard-panel");
 }
 
-function loadData() {
-    teams = teamStorage.getData().map(d => Team.fromData(d));
-    matches = matchStorage.getData();
-    isPlayoffs = localStorage.getItem("swisher_playoff_mode") === "true";
+/* =========================================
+   DATA LOADING: LOCAL vs. REMOTE
+   ========================================= */
 
-    const savedBracket = localStorage.getItem(STORAGE_KEY_BRACKET);
-    if (savedBracket) bracketState = JSON.parse(savedBracket);
+async function loadData() {
+    // 1. Check if we are "Live" (Guest Mode) or "Local" (Admin Mode)
+    // For simplicity, we assume: If we find a user in LocalStorage, use LocalStorage.
+    // If NOT (aka Guest), try to fetch the "Master File" from the server.
 
-    const savedArchives = localStorage.getItem(STORAGE_KEY_ARCHIVE);
-    if (savedArchives) archives = JSON.parse(savedArchives);
+    const savedUser = localStorage.getItem(STORAGE_KEY_USER);
+    const hasLocalUser = !!savedUser;
 
-    const savedSchedule = localStorage.getItem(STORAGE_KEY_SCHEDULE);
-    if (savedSchedule) schedule = JSON.parse(savedSchedule);
+    if (hasLocalUser) {
+        // --- ADMIN / LOCAL MODE ---
+        console.log("Loading from LocalStorage (Admin Mode)...");
+        teams = teamStorage.getData().map(d => Team.fromData(d));
+        matches = matchStorage.getData();
+        isPlayoffs = localStorage.getItem("swisher_playoff_mode") === "true";
 
-    // [NEW] Load Pending Applications
-    const savedPending = localStorage.getItem(STORAGE_KEY_PENDING);
-    if (savedPending) pendingTeams = JSON.parse(savedPending);
+        const savedBracket = localStorage.getItem(STORAGE_KEY_BRACKET);
+        if (savedBracket) bracketState = JSON.parse(savedBracket);
+
+        const savedArchives = localStorage.getItem(STORAGE_KEY_ARCHIVE);
+        if (savedArchives) archives = JSON.parse(savedArchives);
+
+        const savedSchedule = localStorage.getItem(STORAGE_KEY_SCHEDULE);
+        if (savedSchedule) schedule = JSON.parse(savedSchedule);
+
+        const savedPending = localStorage.getItem(STORAGE_KEY_PENDING);
+        if (savedPending) pendingTeams = JSON.parse(savedPending);
+
+        // Render immediately
+        renderDashboard();
+
+    } else {
+        // --- GUEST / PUBLIC MODE ---
+        console.log("Loading from GitHub JSON (Public Mode)...");
+
+        try {
+            // Fetch the file we uploaded to GitHub
+            // Note: We use a timestamp ?t=... to prevent browser caching old data
+            const response = await fetch('league-data.json?t=' + new Date().getTime());
+
+            if (!response.ok) throw new Error("No data file found");
+
+            const data = await response.json();
+
+            // Load data into memory (but NOT LocalStorage, so we don't pollute guest browser)
+            if (data.teams) teams = data.teams.map(d => Team.fromData(d));
+            if (data.matches) matches = data.matches;
+            if (data.archives) archives = data.archives;
+            if (data.schedule) schedule = data.schedule;
+
+            // Helper: We also need to load Bracket state if it was saved in the export
+            // (Note: You might need to update your Export function to include bracketState!)
+            if (data.bracketState) {
+                bracketState = data.bracketState;
+                isPlayoffs = true; // Assume if bracket exists, we are in playoffs
+            }
+
+            // Apply Read-Only Mode
+            currentUser = { name: "Guest", role: "guest" };
+            updateHeaderUI();
+            applyPermissions();
+            renderDashboard();
+
+        } catch (err) {
+            console.error("Could not load remote data:", err);
+            // Fallback to empty if file missing
+            startAsGuest();
+        }
+    }
 }
 
 function setupEventListeners() {
@@ -1242,9 +1294,23 @@ function handleMatchSubmit(e) {
 
 function handleExport() {
     if (!teams.length) { showToast("No data", "info"); return; }
-    const b = new Blob([JSON.stringify({ teams, matches }, null, 2)], { type: "application/json" });
+
+    // [UPDATED] Include EVERYTHING in the export
+    const exportObj = {
+        teams,
+        matches,
+        schedule,
+        archives,
+        bracketState, // Crucial for guests to see playoffs!
+        isPlayoffs
+    };
+
+    const b = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
     const u = URL.createObjectURL(b);
-    const a = document.createElement("a"); a.href = u; a.download = "blitzball_data.json"; a.click();
+    const a = document.createElement("a");
+    a.href = u;
+    a.download = "league-data.json"; // [UPDATED] Default name matches our fetch
+    a.click();
 }
 
 function handleImport(e) {
