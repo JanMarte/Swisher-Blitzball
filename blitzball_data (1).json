@@ -1,0 +1,201 @@
+{
+  "teams": [
+    {
+      "id": 1767717018904,
+      "teamName": "Red Raiders",
+      "captainName": "Jan Marte",
+      "email": "janmmarte16@gmail.com",
+      "phone": "3195364244",
+      "logoUrl": "",
+      "players": [
+        {
+          "name": "Matt",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Jordan",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Jan",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Sabrina",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "John",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        }
+      ],
+      "wins": 0,
+      "losses": 0,
+      "runsScored": 0,
+      "runsAllowed": 0
+    },
+    {
+      "id": 1767717022727,
+      "teamName": "Dolphins",
+      "captainName": "Amally Marte",
+      "email": "janmmarte16@gmail.com",
+      "phone": "3195364244",
+      "logoUrl": "",
+      "players": [
+        {
+          "name": "Doug",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Cheryl",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Tim",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Tucker",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Suzie",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        }
+      ],
+      "wins": 0,
+      "losses": 0,
+      "runsScored": 0,
+      "runsAllowed": 0
+    },
+    {
+      "id": 1767717027132,
+      "teamName": "Skittles",
+      "captainName": "Doug Keiper",
+      "email": "janmmarte16@gmail.com",
+      "phone": "3195364244",
+      "logoUrl": "",
+      "players": [
+        {
+          "name": "Mike",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Jane",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Smith",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Joe",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Jax",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        }
+      ],
+      "wins": 0,
+      "losses": 0,
+      "runsScored": 0,
+      "runsAllowed": 0
+    },
+    {
+      "id": 1767717029498,
+      "teamName": "Uniform FC",
+      "captainName": "Marc",
+      "email": "janmmarte16@gmail.com",
+      "phone": "3195364244",
+      "logoUrl": "",
+      "players": [
+        {
+          "name": "Doe",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Horse",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Corn",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Row",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        },
+        {
+          "name": "Apple",
+          "runs": 0,
+          "photo": null,
+          "wins": 0,
+          "stats": {}
+        }
+      ],
+      "wins": 0,
+      "losses": 0,
+      "runsScored": 0,
+      "runsAllowed": 0
+    }
+  ],
+  "matches": []
+}
