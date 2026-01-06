@@ -62,10 +62,13 @@ function initialize() {
     listManager = new ListManager("teams-list");
     formHandler = new FormHandler("team-form");
 
-    loadData();
     setupEventListeners();
 
     const savedUser = localStorage.getItem(STORAGE_KEY_USER);
+
+    // Load Data (Waits for fetch if guest)
+    await loadData();
+
     if (savedUser) {
         try {
             // Restore session
@@ -74,13 +77,13 @@ function initialize() {
 
             // [NEW] Start the inactivity timer immediately
             startInactivityTimer();
-
         } catch (e) {
             console.error("Login Parse Error:", e);
             startAsGuest();
         }
     } else {
-        startAsGuest();
+        // If no user, loadData() already set us up as Guest via the fetch
+        showPanel("dashboard-panel");
     }
 }
 
