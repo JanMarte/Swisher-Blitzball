@@ -1,0 +1,24 @@
+READ ONE (TEAM DETAILS):
+
++-------------------------------------------------------+
+|           SWISHER BLITZBALL LEAGUE MANAGER            |
++-------------------------------------------------------+
+|  Team Details: Thunder Ducks                          |
+|  ---------------------------------------------------  |
+|                                                       |
+|  Captain: Jan Marte                                   |
+|  Contact: janmarte16@gmail.com | 3195364244           |
+|                                                       |
+|  Current Record:                                      |
+|  Wins: 5   Draws: 0   Losses: 1                       |
+|                                                       |
+|  Roster:                                              |
+|  - Sabrina Marte                                      |
+|  - John Keiper                                   		|
+|  - Jordan Till                                        |
+|                                                       |
+|  [ Edit Team ]    [ Back to Leaderboard ]             |
+|                                                       |
++-------------------------------------------------------+
+| (c) 2025 Swisher BlitzBall League                     |
++-------------------------------------------------------+

@@ -1,0 +1,24 @@
+Use Case 3: View Team Details
+Actor: League Administrator
+
+Goal: See specific contact info and the full player roster for a single team.
+
+Preconditions: The user is viewing the Leaderboard.
+
+Main Flow:
+
+The user clicks the "View" button next to a team in the Leaderboard table.
+
+The system retrieves the specific team's data.
+
+The system displays the Team Details Panel, which includes:
+
+Captain's Name
+
+Contact Email and Phone
+
+Detailed Win/Loss Stats
+
+The full list of Roster names (formatted as a list).
+
+The user clicks "Back" to return to the Leaderboard.

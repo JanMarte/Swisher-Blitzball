@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swisher BlitzBall League</title>
+    <link rel="stylesheet" href="css/app.css">
+    <script type="module" src="js/app.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Swisher BlitzBall League</h1>
+
+        <div class="header-controls">
+            <div id="guest-bar">
+                <button id="btn-header-login" class="btn-small">Login</button>
+                <button id="btn-public-register" class="btn-small">Join League</button>
+            </div>
+
+            <div id="user-bar" class="hidden">
+                <span>Logged in as: <strong id="current-username">User</strong> (<span
+                        id="current-role">Guest</span>)</span>
+                <button id="btn-logout" class="btn-small"
+                    style="background-color: #ef4444; color: white; border:none;">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="login-panel" class="panel hidden">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2 style="margin:0;">Admin Login</h2>
+                <button id="btn-cancel-login" class="btn-small btn-view">Back to Dashboard</button>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-user">Username</label>
+                    <input type="text" id="login-user" placeholder="Enter username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-pass">Password</label>
+                    <input type="password" id="login-pass" placeholder="Enter password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="action-btn">Login</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="dashboard-panel" class="panel">
+            <h2>League Dashboard</h2>
+            <div id="pending-teams-alert" class="alert-box hidden"
+                style="background:#fff7ed; border-left-color:var(--brand-orange); color:#9a3412; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+                <span><strong>🔔 Action Required:</strong> <span id="pending-count">0</span> new team applications
+                    waiting.</span>
+                <button id="btn-review-applications" class="btn-small"
+                    style="background:white; color:#9a3412; border:1px solid #fed7aa;">Review Now</button>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card gold-card interactive-card">
+                    <div class="rank-title">🥇 1st Place</div>
+                    <div id="dash-1st-logo-container" class="podium-logo-container"></div>
+                    <div class="stat-value" id="dash-1st-name">-</div>
+                    <div class="stat-sub" id="dash-1st-record">-</div>
+                </div>
+
+                <div class="stat-card silver-card interactive-card">
+                    <div class="rank-title">🥈 2nd Place</div>
+                    <div id="dash-2nd-logo-container" class="podium-logo-container"></div>
+                    <div class="stat-value" id="dash-2nd-name">-</div>
+                    <div class="stat-sub" id="dash-2nd-record">-</div>
+                </div>
+
+                <div class="stat-card bronze-card interactive-card">
+                    <div class="rank-title">🥉 3rd Place</div>
+                    <div id="dash-3rd-logo-container" class="podium-logo-container"></div>
+                    <div class="stat-value" id="dash-3rd-name">-</div>
+                    <div class="stat-sub" id="dash-3rd-record">-</div>
+                </div>
+            </div>
+
+            <div class="stats-row" style="margin-bottom: 80px;">
+
+                <div id="scorers-panel" class="inner-panel"
+                    style="border-top: 4px solid var(--brand-orange); margin-bottom: 0 !important;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <h3 style="margin:0; color:var(--text-header);">👟 Top 5 Scorers</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="scorers-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px; text-align:center;">#</th>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th style="text-align:center;">Runs</th>
+                                </tr>
+                            </thead>
+                            <tbody id="top-scorers-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="pitchers-panel" class="inner-panel"
+                    style="border-top: 4px solid var(--brand-blue); margin-bottom: 0 !important;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <h3 style="margin:0; color:var(--text-header);">⚾ Top 5 Pitchers</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table id="pitchers-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px; text-align:center;">#</th>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th style="text-align:center;">Wins</th>
+                                </tr>
+                            </thead>
+                            <tbody id="top-pitchers-list"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="schedule-section" class="inner-panel hidden"
+                style="margin-bottom: 30px; border-top: 4px solid var(--brand-blue); margin-top: 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 style="margin:0; color:var(--text-header);">📅 Upcoming Matches</h3>
+                </div>
+                <div id="upcoming-list" class="schedule-grid">
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h3>League Actions</h3>
+                <div class="menu-buttons">
+                    <button id="btn-show-add" class="action-btn hidden">Register New Team</button>
+                    <button id="btn-show-schedule" class="action-btn" style="background-color: var(--success);">📅
+                        Schedule New Match</button>
+
+                    <button id="btn-show-match" class="action-btn btn-match hidden">Enter Match Result</button>
+                    <button id="btn-show-view" class="action-btn">View League Leaderboard</button>
+                    <button id="btn-show-archive" class="action-btn" style="background: #7c3aed;">🏆 Hall of
+                        Champions</button>
+                </div>
+            </div>
+
+            <div class="data-controls">
+                <h3>Data Tools</h3>
+                <div class="data-buttons-row">
+                    <button id="btn-show-generator" class="action-btn hidden"
+                        style="background: var(--brand-blue) !important; margin-bottom: 10px;">⚡ Auto-Generate
+                        Schedule</button>
+                    <button id="btn-archive-season" class="action-btn hidden"
+                        style="background: #10b981; border: 2px solid #059669; font-weight:900;">📦 Archive Season &
+                        Start New</button>
+                    <button id="btn-start-playoffs" class="action-btn hidden"
+                        style="background: var(--brand-navy); border: 2px solid var(--brand-orange); font-weight:900;">⚠️
+                        END SEASON & START PLAYOFFS</button>
+
+                    <button id="btn-export" class="action-btn btn-info hidden">Export Data (JSON)</button>
+                    <label for="file-import" class="action-btn btn-warning label-btn hidden">Import Data</label>
+                    <input type="file" id="file-import" accept=".json" class="hidden">
+                    <button id="btn-reset" class="action-btn btn-reset hidden">Reset Season</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="review-panel" class="panel hidden">
+            <h2>Review Applications</h2>
+            <div id="pending-list" class="schedule-grid"></div>
+            <div class="form-actions">
+                <button type="button" id="btn-back-review" class="btn-back">Back to Dashboard</button>
+            </div>
+        </section>
+
+        <section id="schedule-panel" class="panel hidden">
+            <h2>Schedule Upcoming Match</h2>
+            <form id="schedule-form">
+                <div class="form-group">
+                    <label>Date & Time</label>
+                    <input type="datetime-local" id="sched-date" required>
+                </div>
+
+                <div class="match-container"
+                    style="background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main);">
+                    <div class="team-select-box">
+                        <label style="color:var(--text-muted);">Home Team</label>
+                        <select id="sched-home" required class="team-dropdown">
+                            <option value="">Select...</option>
+                        </select>
+                    </div>
+                    <div class="vs-badge" style="color:var(--text-muted);">VS</div>
+                    <div class="team-select-box">
+                        <label style="color:var(--text-muted);">Away Team</label>
+                        <select id="sched-away" required class="team-dropdown">
+                            <option value="">Select...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn" style="background-color: var(--success);">Publish
+                        Schedule</button>
+                    <button type="button" id="btn-cancel-schedule" class="btn-back">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="playoff-panel" class="panel hidden" style="max-width: 100%;">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--border-color); padding-bottom:15px; margin-bottom:20px;">
+                <h2 style="margin:0;">Championship Playoffs</h2>
+                <div style="display:flex; gap:10px;">
+                    <button id="btn-reset-playoffs" class="btn-small btn-delete">Reset Playoffs</button>
+                    <button id="btn-back-from-bracket" class="btn-small btn-view">Back to Dashboard</button>
+                </div>
+            </div>
+
+            <div class="bracket-wrapper">
+                <div>
+                    <h3 class="bracket-section-title">🏆 Winner's Bracket</h3>
+                    <div id="main-bracket-container" class="bracket-rounds-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="archive-panel" class="panel hidden" style="max-width: 1000px;">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--border-color); padding-bottom:15px; margin-bottom:20px;">
+                <h2 style="margin:0; color:#7c3aed;">🏆 Hall of Champions</h2>
+                <button id="btn-back-from-archive" class="btn-small btn-view">Back to Dashboard</button>
+            </div>
+            <div id="archive-list" class="archive-grid">
+                <p style="text-align:center; color:var(--text-muted); width:100%;">No history found. Complete a season
+                    to see it here!</p>
+            </div>
+        </section>
+
+        <section id="match-panel" class="panel hidden">
+            <h2>Enter Match Result</h2>
+            <form id="match-form">
+                <div class="match-container"
+                    style="flex-direction:column; gap:20px; background:transparent; padding:0; box-shadow:none;">
+
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; background:#fff; padding:10px 15px; border-radius:8px; border:1px solid #e2e8f0; margin-bottom:10px;">
+                        <div
+                            style="font-weight:800; color:var(--brand-navy); display:flex; align-items:center; gap:10px;">
+                            <span>INNING:</span>
+                            <button type="button" class="btn-step" onclick="adjustInning(-1)">◀</button>
+                            <span id="live-inning-display"
+                                style="font-size:1.2em; min-width:20px; text-align:center;">1</span>
+                            <button type="button" class="btn-step" onclick="adjustInning(1)">▶</button>
+                        </div>
+                        <div style="font-weight:800; color:var(--danger); display:flex; align-items:center; gap:10px;">
+                            <span>OUTS:</span>
+                            <button type="button" class="btn-step" onclick="adjustOuts(-1)">-</button>
+                            <span id="live-outs-display"
+                                style="font-size:1.2em; min-width:20px; text-align:center;">0</span>
+                            <button type="button" class="btn-step" onclick="adjustOuts(1)">+</button>
+                        </div>
+                    </div>
+                    <div
+                        style="display:flex; justify-content:space-between; align-items:center; background:var(--brand-navy); padding:20px; border-radius:var(--radius); width:100%; box-sizing:border-box; color:white;">
+                        <div class="team-select-box">
+                            <label for="team1" style="color:#cbd5e1;">Home Team</label>
+                            <select id="team1" required class="team-dropdown">
+                                <option value="">Select...</option>
+                            </select>
+                            <input type="number" id="score1" min="0" placeholder="0" class="score-input" required>
+                        </div>
+
+                        <div class="vs-badge" style="color:#cbd5e1;">VS</div>
+
+                        <div class="team-select-box">
+                            <label for="team2" style="color:#cbd5e1;">Away Team</label>
+                            <select id="team2" required class="team-dropdown">
+                                <option value="">Select...</option>
+                            </select>
+                            <input type="number" id="score2" min="0" placeholder="0" class="score-input" required>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:20px; width:100%;">
+                        <div id="roster-box-1" class="roster-input-box hidden">
+                            <h4
+                                style="margin:0 0 10px 0; color:var(--brand-navy); border-bottom:2px solid var(--brand-orange);">
+                                Home Stats</h4>
+                            <div id="roster-list-1"></div>
+                        </div>
+
+                        <div id="roster-box-2" class="roster-input-box hidden">
+                            <h4
+                                style="margin:0 0 10px 0; color:var(--brand-navy); border-bottom:2px solid var(--brand-blue);">
+                                Away Stats</h4>
+                            <div id="roster-list-2"></div>
+                        </div>
+                    </div>
+
+                    <div style="width:100%; text-align:center; margin-top:10px;">
+                        <label
+                            style="display:inline-block; margin-right:10px; font-weight:bold; color:var(--brand-navy);">Match
+                            Type:</label>
+                        <select id="match-type" style="padding:5px; width:auto; display:inline-block;">
+                            <option value="regular">Regular Season</option>
+                            <option value="exhibition">Exhibition / All-Star</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px;">
+                    <label for="match-video-url">Match Video URL (Optional)</label>
+                    <input type="url" id="match-video-url" placeholder="https://www.youtube.com/watch?v=..."
+                        style="width:100%;">
+                    <p style="font-size:0.8em; color:var(--text-muted); margin-top:5px;">Paste a YouTube link to let
+                        guests watch the game highlights.</p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Save Match Result</button>
+                    <button type="button" id="btn-match-cancel" class="btn-back">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="team-form-panel" class="panel hidden">
+            <h2 id="form-title">Register Team</h2>
+            <form id="team-form" novalidate>
+                <input type="hidden" id="team-id">
+                <fieldset>
+                    <legend>Team Details</legend>
+                    <div class="form-group">
+                        <label for="teamName">Team Name *</label>
+                        <input type="text" id="teamName" required>
+                        <span class="error-msg" id="error-teamName"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="captainName">Captain Name *</label>
+                        <input type="text" id="captainName" required>
+                        <span class="error-msg" id="error-captainName"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Contact Email *</label>
+                        <input type="email" id="email" required>
+                        <span class="error-msg" id="error-email"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Contact Phone *</label>
+                        <input type="tel" id="phone" required>
+                        <span class="error-msg" id="error-phone"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="logoFile">Team Logo (Optional)</label>
+                        <input type="file" id="logoFile" accept="image/*">
+                        <p style="font-size:0.8em; color:var(--text-muted);">Upload a PNG or JPG.</p>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Roster</legend>
+                    <div class="form-group">
+                        <label for="players">Player Names (Comma separated)</label>
+                        <textarea id="players" rows="3" placeholder="e.g., John Doe, Jane Smith, Mike Ross"></textarea>
+                    </div>
+                </fieldset>
+                <fieldset id="stats-fieldset" class="hidden">
+                    <legend>Season Stats (Manual Override)</legend>
+                    <div class="stats-row" style="display:flex; gap:10px;">
+                        <div><label>Wins</label><input type="number" id="wins" value="0"></div>
+                        <div><label>Losses</label><input type="number" id="losses" value="0"></div>
+                        <div><label>Runs Scored</label><input type="number" id="runsScored" value="0"></div>
+                        <div><label>Runs Allowed</label><input type="number" id="runsAllowed" value="0"></div>
+                    </div>
+                </fieldset>
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">Save Team Record</button>
+                    <button type="button" id="btn-form-cancel" class="btn-back">Cancel</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="roster-panel" class="panel hidden">
+            <h2>Manage Roster Photos</h2>
+            <div id="roster-upload-list"></div>
+            <div class="form-actions">
+                <button type="button" id="btn-save-roster" class="submit-btn">Save Photos</button>
+                <button type="button" id="btn-cancel-roster" class="btn-back">Cancel</button>
+            </div>
+        </section>
+
+        <section id="view-teams" class="panel hidden">
+            <h2>League Leaderboard</h2>
+            <div class="search-bar-container">
+                <input type="text" id="search-teams" placeholder="Search team or captain..." class="search-input">
+            </div>
+            <div class="table-responsive">
+                <table id="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th>Team Name</th>
+                            <th style="text-align:center;">W</th>
+                            <th style="text-align:center;">L</th>
+                            <th style="text-align:center;">PCT</th>
+                            <th style="text-align:center;">RS</th>
+                            <th style="text-align:center;">RA</th>
+                            <th style="text-align:center;">Diff</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="teams-list"></tbody>
+                </table>
+            </div>
+            <div id="match-history-section"
+                style="margin-top: 40px; border-top: 2px dashed var(--border-color); padding-top: 20px;">
+                <h3>Recent Results</h3>
+                <div class="table-responsive">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th style="text-align:right;">Home</th>
+                                <th style="text-align:center;">Score</th>
+                                <th style="text-align:left;">Away</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="match-history-list"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" id="btn-leaderboard-back" class="btn-back">Back to Dashboard</button>
+            </div>
+        </section>
+
+        <section id="view-single-team" class="panel hidden">
+            <h2 id="view-team-name">Team Name</h2>
+            <div id="single-team-details"></div>
+            <div class="form-actions">
+                <button type="button" id="btn-manage-roster" class="action-btn" style="background-color: #0ea5e9;">📷
+                    Manage Roster Photos</button>
+                <button type="button" id="btn-edit-from-view" class="action-btn">Edit Team Details</button>
+                <button type="button" id="btn-view-back" class="btn-back">Back</button>
+            </div>
+        </section>
+
+        <section id="view-player-details" class="panel hidden">
+            <div id="player-detail-content"></div>
+            <div class="form-actions">
+                <button type="button" id="btn-player-back" class="btn-back">Back to Team</button>
+            </div>
+        </section>
+
+        <section id="delete-confirm-panel" class="panel hidden">
+            <h2>Delete Team?</h2>
+            <div class="alert-box">
+                <p><strong>WARNING:</strong> This cannot be undone.</p>
+            </div>
+            <div id="delete-summary"></div>
+            <div class="form-actions">
+                <button type="button" id="btn-confirm-delete" class="submit-btn"
+                    style="background-color: var(--danger);">Yes, Delete</button>
+                <button type="button" id="btn-cancel-delete" class="btn-back">Cancel</button>
+            </div>
+        </section>
+
+        <section id="delete-match-confirm-panel" class="panel hidden">
+            <h2>Delete Match Record?</h2>
+            <div class="alert-box">
+                <p><strong>WARNING:</strong> Stats will be reverted.</p>
+            </div>
+            <div id="delete-match-summary"></div>
+            <div class="form-actions">
+                <button type="button" id="btn-confirm-match-delete" class="submit-btn"
+                    style="background-color: var(--danger);">Yes, Delete</button>
+                <button type="button" id="btn-cancel-match-delete" class="btn-back">Cancel</button>
+            </div>
+        </section>
+
+        <section id="reset-season-confirm-panel" class="panel hidden">
+            <h2>⚠️ Factory Reset Season?</h2>
+            <div class="alert-box" style="background-color: #fef2f2; border-left-color: var(--danger); color: #991b1b;">
+                <p><strong>DANGER ZONE:</strong> All data will be wiped.</p>
+            </div>
+            <div class="form-actions">
+                <button type="button" id="btn-confirm-reset-season" class="submit-btn"
+                    style="background-color: var(--danger);">Yes, Wipe Everything</button>
+                <button type="button" id="btn-cancel-reset-season" class="btn-back">Cancel</button>
+            </div>
+        </section>
+
+        <section id="playoff-confirm-panel" class="panel hidden">
+            <h2>Start Playoffs?</h2>
+            <div class="form-actions">
+                <button type="button" id="btn-confirm-start-playoffs" class="submit-btn">Yes</button>
+                <button type="button" id="btn-cancel-start-playoffs" class="btn-back">Cancel</button>
+            </div>
+        </section>
+
+        <section id="reset-playoff-confirm-panel" class="panel hidden">
+            <h2>Reset Playoffs?</h2>
+            <div class="form-actions">
+                <button type="button" id="btn-confirm-reset-playoffs" class="submit-btn">Yes</button>
+                <button type="button" id="btn-cancel-reset-playoffs" class="btn-back">Cancel</button>
+            </div>
+        </section>
+
+        <div id="toast-container" class="toast-container"></div>
+    </main>
+
+    <div id="video-modal" class="video-modal hidden">
+        <div class="video-modal-content">
+            <span id="close-video-modal" class="close-video">&times;</span>
+            <div class="video-wrapper">
+                <iframe id="youtube-player" src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div id="stats-modal" class="video-modal hidden">
+        <div class="video-modal-content" style="background: white; max-width: 500px; padding: 20px;">
+            <div
+                style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #f1f5f9; padding-bottom:10px; margin-bottom:20px;">
+                <h3 id="modal-player-name" style="margin:0; color:var(--brand-navy);">Player Name</h3>
+                <span class="close-video" id="close-stats-modal"
+                    style="position:static; color:#64748b; font-size:2rem; line-height:0.8;">&times;</span>
+            </div>
+
+            <h4 style="margin:0 0 10px 0; color:var(--brand-orange); text-transform:uppercase; font-size:0.85em;">
+                Batting</h4>
+            <div class="stats-grid-buttons">
+                <button type="button" class="stat-btn" onclick="addStat('1B')">1B</button>
+                <button type="button" class="stat-btn" onclick="addStat('2B')">2B</button>
+                <button type="button" class="stat-btn" onclick="addStat('3B')">3B</button>
+                <button type="button" class="stat-btn hr-btn" onclick="addStat('HR')">HR</button>
+
+                <button type="button" class="stat-btn" onclick="addStat('R')">RUN</button>
+                <button type="button" class="stat-btn" onclick="addStat('RBI')">RBI</button>
+                <button type="button" class="stat-btn" onclick="addStat('SB')">SB</button>
+                <button type="button" class="stat-btn outline" onclick="addStat('BB')">BB</button>
+
+                <button type="button" class="stat-btn danger" onclick="addStat('K_BAT')">SO</button>
+            </div>
+
+            <h4 style="margin:20px 0 10px 0; color:var(--brand-blue); text-transform:uppercase; font-size:0.85em;">
+                Pitching</h4>
+            <div class="stats-grid-buttons">
+                <button type="button" class="stat-btn" onclick="addStat('K_PITCH')">K (Strikeout)</button>
+                <button type="button" class="stat-btn" onclick="addStat('BB_PITCH')">BB (Walk)</button>
+                <button type="button" class="stat-btn danger" onclick="addStat('ER')">Earned Run</button>
+
+                <button type="button" class="stat-btn" style="background:#dbeafe; color:#1e40af; border-color:#93c5fd;"
+                    onclick="addStat('W')">WIN</button>
+            </div>
+
+            <div id="modal-player-summary"
+                style="margin-top:20px; background:#f8fafc; padding:10px; border-radius:6px; font-size:0.9em; color:var(--text-muted);">
+            </div>
+        </div>
+    </div>
+
+    <div id="app-details-modal" class="video-modal hidden"
+        style="align-items: center; justify-content: center; z-index: 9999;">
+        <div
+            style="background: white; width: 95%; max-width: 550px; border-radius: 16px; overflow: hidden; position: relative; z-index: 10000; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); display: flex; flex-direction: column; animation: slideIn 0.2s ease-out;">
+
+            <div
+                style="background: var(--brand-navy); padding: 20px 25px; display: flex; align-items: center; border-bottom: 4px solid var(--brand-orange);">
+                <h3
+                    style="margin: 0; color: white; text-transform: uppercase; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px;">
+                    Application Review</h3>
+
+                <button id="btn-close-app-modal"
+                    style="margin-left: auto; width: auto !important; background: transparent; border: none; color: white; font-size: 2rem; line-height: 1; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; padding: 0;">&times;</button>
+            </div>
+
+            <div id="app-details-content" style="padding: 0; max-height: 65vh; overflow-y: auto; background: #f8fafc;">
+            </div>
+
+            <div
+                style="padding: 20px 25px; background: white; border-top: 1px solid #e2e8f0; display: flex; gap: 15px;">
+                <button id="btn-modal-reject"
+                    style="background: white; border: 2px solid #fee2e2; color: var(--danger); flex: 1; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; transition: all 0.2s;">Decline
+                    Application</button>
+
+                <button id="btn-modal-approve"
+                    style="background: var(--success); color: white; border: none; flex: 2; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; box-shadow: 0 4px 6px rgba(16, 185, 129, 0.25); transition: all 0.2s;">Approve
+                    Team</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="generator-modal" class="video-modal hidden"
+        style="align-items: center; justify-content: center; z-index: 9999;">
+        <div
+            style="background: white; width: 90%; max-width: 450px; border-radius: 12px; padding: 30px; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);">
+
+            <h2
+                style="color: var(--brand-navy); margin-top: 0; border-bottom: 2px solid var(--brand-orange); padding-bottom: 10px;">
+                Generate Schedule</h2>
+
+            <p style="color: #64748b; margin-bottom: 20px;">
+                This will pair all <strong>Active Teams</strong> against each other automatically.
+            </p>
+
+            <div class="form-group">
+                <label>Rounds (Head-to-Head)</label>
+                <select id="gen-rounds">
+                    <option value="1">Play each other ONCE (Single Round)</option>
+                    <option value="2">Play each other TWICE (Home & Away)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Start Date</label>
+                <input type="date" id="gen-start-date">
+                <small style="color: #94a3b8;">Matches will be scheduled weekly from this date.</small>
+            </div>
+
+            <div
+                style="background: #fff7ed; color: #c2410c; padding: 15px; border-radius: 8px; font-size: 0.9em; margin-bottom: 20px; border: 1px solid #ffedd5;">
+                <strong>⚠️ Warning:</strong> This will <u>erase</u> all current upcoming matches. Past results will be
+                kept.
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button id="btn-cancel-gen"
+                    style="flex: 1; background: white; border: 2px solid #e2e8f0; color: #64748b;">Cancel</button>
+                <button id="btn-confirm-gen" style="flex: 1; background: var(--brand-blue); color: white;">Run Generator
+                    ⚡</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="match-modal" class="video-modal hidden"
+        style="align-items: center; justify-content: center; z-index: 9000;">
+        <div
+            style="background: white; width: 95%; max-width: 900px; height: 90vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5); position: relative;">
+
+            <div
+                style="background: var(--brand-navy); padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 4px solid var(--brand-orange); flex-shrink: 0;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <span style="font-size: 1.5rem;">🏟️</span>
+                    <div>
+                        <h3
+                            style="margin: 0; color: white; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">
+                            Match Center</h3>
+                        <div id="live-indicator"
+                            style="font-size: 0.75em; color: var(--brand-orange); font-weight: 700; letter-spacing: 1px; margin-top: 2px;">
+                            LIVE SCORING ACTIVE</div>
+                    </div>
+                </div>
+
+                <div
+                    style="display: flex; gap: 15px; background: rgba(255,255,255,0.1); padding: 5px 15px; border-radius: 8px;">
+                    <div style="text-align: center;">
+                        <span
+                            style="display: block; font-size: 0.6em; color: #94a3b8; text-transform: uppercase;">Inning</span>
+                        <strong style="color: white; font-size: 1.1em; cursor: pointer;" onclick="adjustInning(1)"
+                            id="live-inning-display">1</strong>
+                    </div>
+                    <div style="width: 1px; background: rgba(255,255,255,0.2);"></div>
+                    <div style="text-align: center;">
+                        <span
+                            style="display: block; font-size: 0.6em; color: #94a3b8; text-transform: uppercase;">Outs</span>
+                        <strong style="color: var(--brand-orange); font-size: 1.1em; cursor: pointer;"
+                            onclick="adjustOuts(1)" id="live-outs-display">0</strong>
+                    </div>
+                </div>
+
+                <button id="btn-close-match-modal"
+                    style="background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;">&times;</button>
+            </div>
+
+            <div style="flex: 1; overflow-y: auto; background: #f8fafc; padding: 0;">
+                <form id="match-form">
+
+                    <div
+                        style="background: white; padding: 30px 20px; border-bottom: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+
+                        <div
+                            style="display: flex; align-items: center; justify-content: center; gap: 20px; width: 100%; max-width: 700px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 10px;">
+                                <label
+                                    style="color: var(--text-muted); font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Home
+                                    Team</label>
+                                <select id="team1" onchange="updateMatchRosters(1)"
+                                    style="padding: 12px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
+                                    <option value="">Select Home...</option>
+                                </select>
+
+                                <div id="roster-box-1" class="hidden"
+                                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; max-height: 200px; overflow-y: auto;">
+                                    <div
+                                        style="font-size: 0.7em; color: #64748b; font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">
+                                        Lineup & Stats</div>
+                                    <div id="roster-list-1" style="display: flex; flex-direction: column; gap: 5px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="position: relative;">
+                                    <input type="number" id="score1" value="0"
+                                        style="width: 80px; height: 80px; text-align: center; font-size: 3rem; font-weight: 900; background: var(--brand-navy); color: white; border: 4px solid var(--brand-navy); border-radius: 12px;">
+                                    <div
+                                        style="position: absolute; top: 0; right: -15px; display: flex; flex-direction: column; height: 100%; justify-content: center; gap: 2px;">
+                                        <button type="button" class="btn-step plus"
+                                            onclick="window.stepStat(this, 1)">+</button>
+                                        <button type="button" class="btn-step minus"
+                                            onclick="window.stepStat(this, -1)">-</button>
+                                    </div>
+                                </div>
+
+                                <div style="font-size: 2rem; font-weight: 900; color: #cbd5e1; font-style: italic;">VS
+                                </div>
+
+                                <div style="position: relative;">
+                                    <input type="number" id="score2" value="0"
+                                        style="width: 80px; height: 80px; text-align: center; font-size: 3rem; font-weight: 900; background: white; color: var(--brand-navy); border: 4px solid var(--brand-navy); border-radius: 12px;">
+                                    <div
+                                        style="position: absolute; top: 0; right: -15px; display: flex; flex-direction: column; height: 100%; justify-content: center; gap: 2px;">
+                                        <button type="button" class="btn-step plus"
+                                            onclick="window.stepStat(this, 1)">+</button>
+                                        <button type="button" class="btn-step minus"
+                                            onclick="window.stepStat(this, -1)">-</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="flex: 1; min-width: 200px; display: flex; flex-direction: column; gap: 10px;">
+                                <label
+                                    style="color: var(--text-muted); font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Away
+                                    Team</label>
+                                <select id="team2" onchange="updateMatchRosters(2)"
+                                    style="padding: 12px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 8px; cursor: pointer;">
+                                    <option value="">Select Away...</option>
+                                </select>
+
+                                <div id="roster-box-2" class="hidden"
+                                    style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px; max-height: 200px; overflow-y: auto;">
+                                    <div
+                                        style="font-size: 0.7em; color: #64748b; font-weight: 700; margin-bottom: 5px; text-transform: uppercase;">
+                                        Lineup & Stats</div>
+                                    <div id="roster-list-2" style="display: flex; flex-direction: column; gap: 5px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="padding: 25px; max-width: 700px; margin: 0 auto;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label>Match Type</label>
+                                <select id="match-type">
+                                    <option value="regular">Regular Season</option>
+                                    <option value="exhibition">Exhibition / Friendly</option>
+                                    <option value="playoff">Playoff Match</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>YouTube Video URL (Optional)</label>
+                                <input type="url" id="match-video-url" placeholder="https://youtu.be/...">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div
+                style="background: white; padding: 20px 25px; border-top: 1px solid #e2e8f0; display: flex; gap: 15px; justify-content: flex-end;">
+                <button type="button" id="btn-match-cancel"
+                    style="background: white; border: 2px solid #e2e8f0; color: #64748b; padding: 12px 24px; border-radius: 8px; font-weight: 700; text-transform: uppercase; cursor: pointer;">Cancel</button>
+                <button type="button" onclick="document.getElementById('match-form').requestSubmit()"
+                    style="background: var(--brand-orange); border: none; color: white; padding: 12px 30px; border-radius: 8px; font-weight: 700; text-transform: uppercase; box-shadow: 0 4px 6px rgba(234, 88, 12, 0.3); cursor: pointer;">Finalize
+                    Match</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="inactivity-modal" class="video-modal hidden"
+        style="align-items: center; justify-content: center; z-index: 11000;">
+        <div
+            style="background: white; width: 90%; max-width: 400px; padding: 40px 30px; border-radius: 16px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); animation: popIn 0.3s ease-out;">
+            <div style="font-size: 3.5rem; margin-bottom: 15px;">⏳</div>
+
+            <h3 id="inactivity-title"
+                style="color: var(--brand-navy); margin: 0 0 10px 0; font-size: 1.5rem; font-weight: 800;">Session
+                Expiring</h3>
+
+            <p id="inactivity-msg" style="color: #64748b; margin-bottom: 30px; font-size: 1.1rem;">
+                You will be logged out in <span id="inactivity-countdown"
+                    style="font-weight: 900; color: var(--brand-orange); font-size: 1.2em;">30</span> seconds.
+            </p>
+
+            <button id="btn-stay-logged-in"
+                style="background: var(--brand-blue); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; box-shadow: 0 4px 6px rgba(37, 99, 235, 0.3);">I'm
+                still here!</button>
+
+            <button id="btn-close-timeout" class="hidden"
+                style="background: var(--brand-navy); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem;">Close</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Swisher BlitzBall League</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+Use Case 4: Update Team Stats & Roster
+Actor: League Administrator
+
+Goal: Update a team's win/loss record or modify their player roster.
+
+Preconditions: The user is viewing the Leaderboard or Team Details.
+
+Main Flow:
+
+The user clicks the "Edit" button for a specific team.
+
+The system opens the Registration Form pre-filled with that team's existing data.
+
+The user modifies the Season Stats (e.g., changes Wins from 0 to 1).
+
+The user adds a new player to the Roster text area.
+
+The user clicks "Save Team Record".
+
+The system updates the existing record in Local Storage.
+
+The system displays the Success Confirmation Panel with the message: "Team record updated successfully!".

@@ -1,0 +1,40 @@
+Use Case 1: Register New Team
+Actor: League Administrator
+
+Goal: Add a new team to the league database with valid contact and roster information.
+
+Preconditions: The user is on the Main Menu.
+
+Main Flow (Success Scenario):
+
+The user clicks the "Register New Team" button on the Main Menu.
+
+The system displays the blank Registration Form.
+
+The user enters the Team Name and Captain Name.
+
+The user enters a valid Email Address.
+
+The user enters a Phone Number in a valid format (e.g., 555-123-4567 or (555) 123-4567).
+
+The user enters a list of comma-separated player names in the Roster field.
+
+The user clicks the "Save Team Record" button.
+
+The system validates all inputs.
+
+The system saves the new team to Local Storage.
+
+The system hides the form and displays the Success Confirmation Panel with the message: "New team registered successfully!".
+
+The user clicks "Continue to Main Menu" to return to the start.
+
+Alternative Flow (Validation Error):
+
+Step 8a: If the user enters an invalid phone number (e.g., "12345"):
+
+The system detects the pattern mismatch against the regex.
+
+The system displays an error message under the phone field: "Format: 555-123-4567 or (555) 123-4567".
+
+The form is not submitted, and the user must correct the data.

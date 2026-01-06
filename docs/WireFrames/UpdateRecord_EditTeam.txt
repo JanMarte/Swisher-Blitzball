@@ -1,0 +1,24 @@
+UPDATE RECORD (EDIT TEAM):
+
++-------------------------------------------------------+
+|           SWISHER BLITZBALL LEAGUE MANAGER            |
++-------------------------------------------------------+
+|  Edit Team: Thunder Ducks                             |
+|  ---------------------------------------------------  |
+|                                                       |
+|  Team Name:        [ Red Raiders           ]          |
+|  Captain Name:     [ Jan Marte             ]          |
+|  Contact Email:    [ janmmarte16@gmail.com ]          |
+|  Contact Phone:    [ (319) 536-4244        ]          |
+|                                                       |
+|  -- Season Stats --                                   |
+|  Wins: [ 5 ]   Draws: [ 0 ]   Losses: [ 1 ]           |
+|                                                       |
+|  Roster:                                              |
+|  [ Sabrina Marte, John Keiper, Jordan Till ]          |
+|                                                       |
+|  [ Save Changes ]    [ Cancel ]                       |
+|                                                       |
++-------------------------------------------------------+
+| (c) 2025 Swisher BlitzBall League                     |
++-------------------------------------------------------+

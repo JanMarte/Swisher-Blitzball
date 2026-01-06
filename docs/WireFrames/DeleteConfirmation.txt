@@ -1,0 +1,22 @@
+DELETE CONFIRMATION:
+
++-------------------------------------------------------+
+|           SWISHER BLITZBALL LEAGUE MANAGER            |
++-------------------------------------------------------+
+|  DELETE TEAM?                                         |
+|  ---------------------------------------------------  |
+|                                                       |
+|  WARNING: You are about to delete this team.          |
+|  This action cannot be undone.                        |
+|                                                       |
+|  Team: Red Raiders                                    |
+|  Captain: Jan Marte                                   |
+|  Record: 5-0-1                                        |
+|                                                       |
+|  Are you sure?                                        |
+|                                                       |
+|  [ Yes, Delete Permanently ]    [ Cancel ]            |
+|                                                       |
++-------------------------------------------------------+
+| (c) 2025 Swisher BlitzBall League                     |
++-------------------------------------------------------+

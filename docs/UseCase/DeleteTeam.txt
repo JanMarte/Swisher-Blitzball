@@ -1,0 +1,28 @@
+Use Case 5: Delete Team
+Actor: League Administrator
+
+Goal: Permanently remove a team from the league.
+
+Preconditions: The user is viewing the Leaderboard.
+
+Main Flow:
+
+The user clicks the "X" (Delete) button next to a team.
+
+The system hides the Leaderboard and displays the custom Delete Confirmation Panel.
+
+The panel shows a summary of the team to be deleted (Name, Captain, Record) and a warning.
+
+The user clicks the red "Yes, Delete Permanently" button.
+
+The system removes the team from Local Storage.
+
+The system automatically returns the user to the Leaderboard, which refreshes to show the team is gone.
+
+Alternative Flow (Cancel Delete):
+
+Step 4a: The user clicks "Cancel".
+
+The system abandons the deletion.
+
+The user is returned to the Leaderboard with no changes made.

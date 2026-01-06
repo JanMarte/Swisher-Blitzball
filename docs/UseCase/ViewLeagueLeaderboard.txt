@@ -1,0 +1,24 @@
+Use Case 2: View League Leaderboard
+Actor: League Administrator / Viewer
+
+Goal: View a summary of all registered teams, ranked by their performance.
+
+Preconditions: At least one team exists in the system.
+
+Main Flow:
+
+The user clicks "View League Leaderboard" on the Main Menu.
+
+The system retrieves all teams from storage.
+
+The system sorts the teams in descending order based on the number of Wins.
+
+The system displays the Leaderboard Table, showing:
+
+Team Name
+
+Captain Name
+
+Win-Draw-Loss Record
+
+Action Buttons (View, Edit, Delete).
