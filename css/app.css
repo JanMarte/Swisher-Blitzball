@@ -1964,3 +1964,22 @@ input.input-error {
     margin-left: 5px;
     font-weight: 600;
 }
+
+/* Header & Logo Styling */
+.brand-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    /* Aligns to the left */
+    gap: 15px;
+}
+
+.league-logo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    object-fit: cover;
+    margin-right: 10px;
+}
