@@ -197,5 +197,87 @@
       "runsAllowed": 0
     }
   ],
-  "matches": []
+  "matches": [],
+  "schedule": [
+    {
+      "id": 1767734137726.6953,
+      "date": "Jan 9, 06:00 PM",
+      "home": "Red Raiders",
+      "away": "Uniform FC"
+    },
+    {
+      "id": 1767734137733.9202,
+      "date": "Jan 9, 06:00 PM",
+      "home": "Dolphins",
+      "away": "Skittles"
+    },
+    {
+      "id": 1767734137733.1753,
+      "date": "Jan 16, 06:00 PM",
+      "home": "Red Raiders",
+      "away": "Skittles"
+    },
+    {
+      "id": 1767734137733.5347,
+      "date": "Jan 16, 06:00 PM",
+      "home": "Uniform FC",
+      "away": "Dolphins"
+    },
+    {
+      "id": 1767734137733.6558,
+      "date": "Jan 23, 06:00 PM",
+      "home": "Red Raiders",
+      "away": "Dolphins"
+    },
+    {
+      "id": 1767734137733.783,
+      "date": "Jan 23, 06:00 PM",
+      "home": "Skittles",
+      "away": "Uniform FC"
+    },
+    {
+      "id": 1767734137733.0854,
+      "date": "Jan 30, 06:00 PM",
+      "home": "Red Raiders",
+      "away": "Uniform FC"
+    },
+    {
+      "id": 1767734137733.375,
+      "date": "Jan 30, 06:00 PM",
+      "home": "Dolphins",
+      "away": "Skittles"
+    },
+    {
+      "id": 1767734137733.3474,
+      "date": "Feb 6, 06:00 PM",
+      "home": "Red Raiders",
+      "away": "Skittles"
+    },
+    {
+      "id": 1767734137733.8806,
+      "date": "Feb 6, 06:00 PM",
+      "home": "Uniform FC",
+      "away": "Dolphins"
+    },
+    {
+      "id": 1767734137733.722,
+      "date": "Feb 13, 06:00 PM",
+      "home": "Red Raiders",
+      "away": "Dolphins"
+    },
+    {
+      "id": 1767734137733.4062,
+      "date": "Feb 13, 06:00 PM",
+      "home": "Skittles",
+      "away": "Uniform FC"
+    }
+  ],
+  "archives": [],
+  "bracketState": {
+    "mainRounds": [],
+    "consolationRounds": [],
+    "thirdPlaceMatch": null,
+    "champion": null
+  },
+  "isPlayoffs": false
 }
